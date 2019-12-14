@@ -60,6 +60,7 @@ install: libciglet.a ciglet.h
 	cp libciglet.a $(PREFIX)/lib
 	cp ciglet.h $(PREFIX)/include/ciglet
 	cp external/fastapprox-all.h $(PREFIX)/include/ciglet/external
+	cp external/fastapprox-all-nosimd.h $(PREFIX)/include/ciglet/external
 
 ciglet.o: ciglet.c ciglet.h
 fftsg.o: external/fftsg_h.c
