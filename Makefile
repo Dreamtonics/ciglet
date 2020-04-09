@@ -10,8 +10,8 @@ ifeq ($(CXX), emcc)
   CFLAGS_DBG = $(CFLAGS_COMMON) -O1 -g -D_DEBUG
   CFLAGS_REL = $(CFLAGS_COMMON) -O3
 else
-  CFLAGS_DBG = $(CFLAGS_COMMON) -fopenmp -Og -g -D_DEBUG
-  CFLAGS_REL = $(CFLAGS_COMMON) -fopenmp -Ofast
+  CFLAGS_DBG = $(CFLAGS_COMMON) -Og -g -D_DEBUG
+  CFLAGS_REL = $(CFLAGS_COMMON) -Ofast
 endif
 ifeq ($(CONFIG), Debug)
   CFLAGS = $(CFLAGS_DBG)
