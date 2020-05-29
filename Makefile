@@ -5,7 +5,9 @@ AR ?= ar
 FP_TYPE = float
 CONFIG  = Debug
 
-CFLAGS_COMMON = -Iexternal -D_POSIX_C_SOURCE=2 -DFP_TYPE=$(FP_TYPE) -std=c99 -Wall -fPIC $(CFLAGSEXT)
+CFLAGS_PLAT =
+CFLAGS_COMMON = -Iexternal -D_POSIX_C_SOURCE=2 -DFP_TYPE=$(FP_TYPE) \
+  -std=c99 -Wall -fPIC $(CFLAGS_PLAT)
 ifeq ($(CXX), emcc)
   CFLAGS_DBG = $(CFLAGS_COMMON) -O1 -g -D_DEBUG
   CFLAGS_REL = $(CFLAGS_COMMON) -O3
@@ -90,10 +92,10 @@ single-file/ciglet.h: ciglet.h
 
 clean:
 	@echo 'Removing all temporary binaries... '
-	@rm -f *.o *.a *.html *.data *.js *.wasm
+	@rm -rf *.o *.a *.html *.data *.js *.wasm
 	@echo Done.
 
 clear:
 	@echo 'Removing all temporary binaries... '
-	@rm -f *.o *.a *.html *.data *.js *.wasm
+	@rm -rf *.o *.a *.html *.data *.js *.wasm
 	@echo Done.
