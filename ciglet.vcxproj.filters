@@ -1,0 +1,12 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="ciglet.c" />
+    <ClCompile Include="external\fast_median.c" />
+    <ClCompile Include="external\fftsg_h.c" />
+    <ClCompile Include="external\wavfile.c" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ciglet.h" />
+  </ItemGroup>
+</Project>
