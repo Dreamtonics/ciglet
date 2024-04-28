@@ -24,10 +24,10 @@ add_library(ciglet STATIC
   external/wavfile.c
   external/fast_median.c
 )
-add_compile_definitions(ciglet PRIVATE FP_TYPE=${CIGLET_FP_TYPE})
+target_compile_definitions(ciglet PUBLIC FP_TYPE=${CIGLET_FP_TYPE})
 find_library(M_LIBRARY m)
 if(M_LIBRARY)
-  target_link_libraries(ciglet INTERFACE ${M_LIBRARY})
+  target_link_libraries(ciglet PRIVATE ${M_LIBRARY})
 endif()
 include_directories(ciglet PRIVATE external)
 
