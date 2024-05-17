@@ -24,6 +24,11 @@ add_library(ciglet STATIC
   external/wavfile.c
   external/fast_median.c
 )
+if (NOT MSVC)
+  target_compile_options(ciglet PRIVATE -ffast-math)
+else()
+  target_compile_options(ciglet PRIVATE /fp:fast)
+endif()
 target_compile_definitions(ciglet PUBLIC FP_TYPE=${CIGLET_FP_TYPE})
 find_library(M_LIBRARY m)
 if(M_LIBRARY)
