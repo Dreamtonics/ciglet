@@ -28,6 +28,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <assert.h>
 
 #define false 0
 #define true  1
@@ -163,9 +164,26 @@ static bool GetParameters(FILE *fp, int *fs, int *nbit, int *wav_length, int *fo
   return true;
 }
 
-void wavwrite_fp(FP_TYPE* x, int x_length, int fs, int nbit, FILE* fp) {
+void wavwrite_ex_fp(FP_TYPE* x, int x_length, int fs, int nbit, int format, FILE* fp) {
   if (nbit % 8 != 0 || nbit > 32) {
     printf("Unsupported bit per sample.\n");
+    assert(false);
+    return;
+  }
+
+  switch(format) {
+  case FORMAT_PCM:
+    break;
+  case FORMAT_IEEE_FLOAT:
+    if (nbit != 32) {
+      printf("Unsupported bit per sample.\n");
+      assert(false);
+      return;
+    }
+    break;
+  default:
+    printf("Unsupported format.\n");
+    assert(false);
     return;
   }
   
@@ -189,7 +207,7 @@ void wavwrite_fp(FP_TYPE* x, int x_length, int fs, int nbit, FILE* fp) {
 
   long_number = 16;
   fwrite(&long_number, 4, 1, fp);
-  int16_t short_number = FORMAT_PCM;
+  int16_t short_number = format;
   fwrite(&short_number, 2, 1, fp);
   short_number = 1; // nChannels
   fwrite(&short_number, 2, 1, fp);
@@ -228,22 +246,48 @@ void wavwrite_fp(FP_TYPE* x, int x_length, int fs, int nbit, FILE* fp) {
     tmp_signal = (int32_t)(MyMax(-8388608, MyMin(8388607, (int)(x[i] * 8388607))));
     fwrite(&tmp_signal, 3, 1, fp);
   }
-  else if (nbyte == 4)
-  for (int i = 0; i < x_length; ++i) {
-    int32_t tmp_signal;
-    tmp_signal = (int32_t)(MyMax(-2147483648, MyMin(2147483647, (int)(x[i] * 2147483647))));
-    fwrite(&tmp_signal, 4, 1, fp);
+  else if (nbyte == 4) {
+    switch(format) {
+    case FORMAT_PCM:
+      for (int i = 0; i < x_length; ++i) {
+        int32_t tmp_signal;
+        tmp_signal = (int32_t)(MyMax(-2147483648, MyMin(2147483647, (int)((double)x[i] * 2147483647))));
+        fwrite(&tmp_signal, 4, 1, fp);
+      }
+      break;
+    case FORMAT_IEEE_FLOAT:
+      for (int i = 0; i < x_length; ++i) {
+        float tmp_signal;
+        tmp_signal = (float)x[i];
+        fwrite(&tmp_signal, 4, 1, fp);
+      }
+      break;
+    default:
+      printf("Unsupported format.\n");
+      assert(false);
+      return;
+    }
   }
+  
 }
 
-void wavwrite(FP_TYPE* x, int x_length, int fs, int nbit, char* filename) {
+void wavwrite_fp(FP_TYPE* x, int x_length, int fs, int nbit, FILE* fp) {
+  wavwrite_ex_fp(x, x_length, fs, nbit, FORMAT_PCM, fp);
+}
+
+void wavwrite_ex(FP_TYPE* x, int x_length, int fs, int nbit, int format, char const* filename) {
   FILE* fp = fopen(filename, "wb");
   if (fp == NULL) {
     printf("File cannot be opened.\n");
+    assert(false);
     return;
   }
-  wavwrite_fp(x, x_length, fs, nbit, fp);
+  wavwrite_ex_fp(x, x_length, fs, nbit, format, fp);
   fclose(fp);
+}
+
+void wavwrite(FP_TYPE* x, int x_length, int fs, int nbit, char const* filename) {
+  wavwrite_ex(x, x_length, fs, nbit, FORMAT_PCM, filename);
 }
 
 typedef union {
