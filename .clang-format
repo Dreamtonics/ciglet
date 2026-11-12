@@ -1,0 +1,24 @@
+---
+# Requires clang-format >= 22; Xcode's clang-format 21 cannot parse BreakAfterOpenBracketLoop.
+Language: Cpp
+BasedOnStyle: LLVM
+AlignAfterOpenBracket: BlockIndent
+AlignOperands: DontAlign
+AlignTrailingComments:
+  Kind: Leave
+AllowShortBlocksOnASingleLine: Empty
+BinPackLongBracedList: false
+BreakAfterOpenBracketLoop: true
+BreakBeforeCloseBracketLoop: true
+ColumnLimit: 120
+ConstructorInitializerIndentWidth: 2
+ContinuationIndentWidth: 2
+EmptyLineBeforeAccessModifier: Leave
+InsertNewlineAtEOF: true
+PenaltyBreakAssignment: 140
+PenaltyBreakComment: 600
+PenaltyBreakFirstLessLess: 240
+PenaltyBreakTemplateDeclaration: 20
+PenaltyReturnTypeOnItsOwnLine: 300
+PointerAlignment: Left
+SortIncludes: Never
